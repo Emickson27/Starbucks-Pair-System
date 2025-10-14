@@ -57,31 +57,5 @@ public class FileLoader {
         return drinks;
     }
 
-    // 🧾 Print a single drink
-    public void printItem(Drink drink) {
-        if (drink == null) {
-            System.out.println("No drink to display.");
-            return;
-        }
-        System.out.println("---------------------------------");
-        System.out.println("Drink Name : " + drink.getDrinkName());
-        System.out.println("Type       : " + drink.getDrinkType());
-        System.out.println("Size       : " + drink.getSize());
-        System.out.println("Price      : $" + drink.getPrice());
-        System.out.println("---------------------------------");
-    }
-
-    // Print the full menu
-    public void printMenu(List<Drink> drinks) {
-        if (drinks == null || drinks.isEmpty()) {
-            System.out.println("No drinks found in the menu.");
-            return;
-        }
-
-        System.out.println("\n==========  STARBUCKS MENU  ==========\n");
-        for (Drink d : drinks) {
-            System.out.println(d);
-        }
-        System.out.println("\n========================================\n");
-    }
+   
 }
