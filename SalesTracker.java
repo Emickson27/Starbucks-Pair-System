@@ -33,7 +33,7 @@ public class SalesTracker {
     private int calculateTotalDrinksSold() {
         return completedOrders.stream()
                 .flatMap(order -> order.getItems().stream())
-                .mapToInt(OrderItem::getQuantity)
+                .mapToInt(item -> item.getQuantity())
                 .sum();
     }
 
@@ -47,7 +47,7 @@ public class SalesTracker {
         Map<String, Integer> drinkCounts = new HashMap<>();
 
         for (Order order : completedOrders) {
-            for (OrderItem item : order.getItems()) {
+            for (Order.OrderItem item : order.getItems()) {
                 String key = item.getDrink().getDrinkName() + " (" + item.getDrink().getSize() + ")";
                 drinkCounts.merge(key, item.getQuantity(), Integer::sum);
             }

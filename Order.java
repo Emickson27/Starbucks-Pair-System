@@ -4,7 +4,46 @@ import java.util.List;
 import java.util.Objects;
 
 public class Order {
-    private final List<OrderItem> items;
+    /**
+     * Inner class representing an item in an order
+     */
+    public static class OrderItem {
+        private final Drink drink;
+        private final int quantity;
+
+        public OrderItem(Drink drink, int quantity) {
+            if (drink == null) {
+                throw new IllegalArgumentException("Drink cannot be null");
+            }
+            if (quantity <= 0) {
+                throw new IllegalArgumentException("Quantity must be positive");
+            }
+
+            this.drink = drink;
+            this.quantity = quantity;
+        }
+
+        public Drink getDrink() {
+            return drink;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public double getTotalPrice() {
+            return drink.calculatePrice() * quantity;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%s x%d - $%.2f",
+                               drink.getDrinkName(),
+                               quantity,
+                               getTotalPrice());
+        }
+    }
+    private final List<Order.OrderItem> items;
     private final Customer customer;
     private final LocalDateTime orderTime;
     private final int orderNumber;
@@ -25,7 +64,7 @@ public class Order {
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be positive");
         }
-        items.add(new OrderItem(drink, quantity));
+        items.add(new Order.OrderItem(drink, quantity));
     }
 
     public void removeItem(Drink drink, int quantity) {
@@ -50,7 +89,7 @@ public class Order {
         double subtotal = calculateSubtotal();
 
         // Apply bulk discount if more than 3 total drinks
-        int totalDrinks = items.stream().mapToInt(OrderItem::getQuantity).sum();
+        int totalDrinks = items.stream().mapToInt(item -> item.getQuantity()).sum();
         if (totalDrinks > 3) {
             subtotal *= 0.9; // 10% discount
         }
@@ -66,7 +105,7 @@ public class Order {
         return isCompleted;
     }
 
-    public List<OrderItem> getItems() {
+    public List<Order.OrderItem> getItems() {
         return new ArrayList<>(items); // Return defensive copy
     }
 
@@ -89,7 +128,7 @@ public class Order {
         sb.append("Customer: ").append(customer.getName()).append("\n");
         sb.append("Items:\n");
 
-        for (OrderItem item : items) {
+        for (Order.OrderItem item : items) {
             sb.append("  ").append(item).append("\n");
         }
 
