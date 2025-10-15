@@ -23,7 +23,7 @@ public class FileLoader {
 
     public List<Drink> loadDrinksFromCSV(String filePath) {
         List<Drink> drinks = new ArrayList<>();
-        Set<String> seenDrinks = new HashSet<>(); // For duplicate detection
+        Set<String> seenDrinks = new HashSet<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -49,7 +49,6 @@ public class FileLoader {
                     double price = Double.parseDouble(values[3].trim());
                     String drinkKey = (drinkName + "|" + drinkType + "|" + size).toLowerCase();
 
-                    // Check for duplicates
                     if (seenDrinks.contains(drinkKey)) {
                         System.err.println("⚠️ Duplicate drink skipped: " + drinkName + " (" + size + ") - " + drinkType);
                         continue;
@@ -57,7 +56,6 @@ public class FileLoader {
 
                     seenDrinks.add(drinkKey);
 
-                    // look up factory
                     DrinkFactory factory = factoryMap.get(drinkType.toLowerCase());
                     if (factory != null) {
                         Drink drink = factory.createDrink(drinkName, drinkType, size, price);
@@ -77,6 +75,4 @@ public class FileLoader {
         System.out.println("✅ Loaded " + drinks.size() + " unique drinks from menu");
         return drinks;
     }
-
-   
 }

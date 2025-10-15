@@ -6,7 +6,6 @@ public class Frappuccino extends Drink {
 
     @Override
     public double calculatePrice() {
-        // Frappuccinos have a $0.50 premium
         return getBasePrice() + 0.50;
     }
 

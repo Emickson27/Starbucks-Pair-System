@@ -74,7 +74,6 @@ public class CLIMenu {
 
     }System.out.println("\n========================================\n");}
 
-    // 🧾 Print a single drink
     public void printItem(Drink drink) {
         if (drink == null) {
             System.out.println("No drink to display.");
@@ -88,7 +87,6 @@ public class CLIMenu {
         System.out.println("---------------------------------");
     }
 
-    // Print the full menu
     public void printMenu(List<Drink> drinks) {
         if (drinks == null || drinks.isEmpty()) {
             System.out.println("No drinks found in the menu.");
@@ -154,18 +152,15 @@ public class CLIMenu {
 
                 if (selectedDrink != null) {
                     order.addItem(selectedDrink, quantity);
-                    System.out.printf("✅ Added %dx %s (%s) to order - $%.2f%n",
-                                    quantity, drinkName, size,
-                                    selectedDrink.calculatePrice() * quantity);
+                    System.out.println("✅ Added " + quantity + "x " + drinkName + " (" + size + ") to order - $" + (selectedDrink.calculatePrice() * quantity));
                 } else {
-                    System.out.printf("❌ Drink '%s' in size '%s' not found in menu.%n", drinkName, size);
+                    System.out.println("❌ Drink '" + drinkName + "' in size '" + size + "' not found in menu.");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("❌ Invalid quantity. Please enter a number.");
             }
         }
 
-        // Complete the order and add to sales tracker
         order.completeOrder();
         salesTracker.addCompletedOrder(order);
 

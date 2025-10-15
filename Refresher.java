@@ -6,7 +6,7 @@ public class Refresher extends Drink {
 
     @Override
     public double calculatePrice() {
-        return getBasePrice(); // Refresher uses base price as-is
+        return getBasePrice();
     }
 
     @Override

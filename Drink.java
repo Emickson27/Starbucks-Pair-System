@@ -28,14 +28,12 @@ public abstract class Drink {
         validateSize(this.size);
     }
 
-    // Abstract methods for polymorphism
     public abstract double calculatePrice();
     public abstract String getDisplayLabel();
 
-    // Template method pattern for consistent toString
     @Override
     public final String toString() {
-        return getDisplayLabel() + " (" + size + ") - $" + String.format("%.2f", calculatePrice());
+        return getDisplayLabel() + " (" + size + ") - $" + calculatePrice();
     }
 
     // Protected validation method for subclasses to override if needed

@@ -1,12 +1,8 @@
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Order {
-    /**
-     * Inner class representing an item in an order
-     */
     public static class OrderItem {
         private final Drink drink;
         private final int quantity;
@@ -37,15 +33,11 @@ public class Order {
 
         @Override
         public String toString() {
-            return String.format("%s x%d - $%.2f",
-                               drink.getDrinkName(),
-                               quantity,
-                               getTotalPrice());
+            return drink.getDrinkName() + " x" + quantity + " - $" + getTotalPrice();
         }
     }
     private final List<Order.OrderItem> items;
     private final Customer customer;
-    private final LocalDateTime orderTime;
     private final int orderNumber;
     private boolean isCompleted;
 
@@ -53,7 +45,6 @@ public class Order {
         this.customer = Objects.requireNonNull(customer, "Customer cannot be null");
         this.orderNumber = orderNumber;
         this.items = new ArrayList<>();
-        this.orderTime = LocalDateTime.now();
         this.isCompleted = false;
     }
 
@@ -117,10 +108,6 @@ public class Order {
         return orderNumber;
     }
 
-    public LocalDateTime getOrderTime() {
-        return orderTime;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -132,8 +119,8 @@ public class Order {
             sb.append("  ").append(item).append("\n");
         }
 
-        sb.append(String.format("Subtotal: $%.2f\n", calculateSubtotal()));
-        sb.append(String.format("Total: $%.2f\n", calculateTotal()));
+        sb.append("Subtotal: $" + calculateSubtotal() + "\n");
+        sb.append("Total: $" + calculateTotal() + "\n");
 
         return sb.toString();
     }

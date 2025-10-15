@@ -9,7 +9,6 @@ public class Seasonal extends Drink {
     public double calculatePrice() {
         double price = getBasePrice();
 
-        // Seasonal drinks get 20% off during happy hour
         if (isHappyHour) {
             price *= 0.8;
         }
@@ -19,11 +18,11 @@ public class Seasonal extends Drink {
 
     @Override
     public String getDisplayLabel() {
-        String label = getDrinkType() + ": " + getDrinkName();
+        String displayLabel = getDrinkType() + ": " + getDrinkName();
         if (isHappyHour) {
-            label += " (Happy Hour!)";
+            displayLabel += " (Happy Hour!)";
         }
-        return label;
+        return displayLabel;
     }
 
     // Static method to set happy hour status

@@ -2,10 +2,10 @@ import java.util.*;
 public class Runner {
 
     public static void main(String[] args) {
-        FileLoader fileloader = new FileLoader();
+        FileLoader fileLoader = new FileLoader();
         CLIMenu menu = new CLIMenu();
 
-        List<Drink> drinkMenu = fileloader.loadDrinksFromCSV("menu.csv");
+        List<Drink> drinkMenu = fileLoader.loadDrinksFromCSV("menu.csv");
         menu.setDrinkMenu(drinkMenu);
         menu.showMainMenu();
     }

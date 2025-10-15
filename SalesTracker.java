@@ -82,7 +82,6 @@ public class SalesTracker {
         return new ArrayList<>(completedOrders);
     }
 
-    // Inner class for sales summary data
     public static class SalesSummary {
         private final int totalDrinksSold;
         private final double totalRevenue;
@@ -112,7 +111,7 @@ public class SalesTracker {
             StringBuilder sb = new StringBuilder();
             sb.append("=== DAILY SALES SUMMARY ===\n");
             sb.append("Total Drinks Sold: ").append(totalDrinksSold).append("\n");
-            sb.append("Total Revenue: $").append(String.format("%.2f", totalRevenue)).append("\n");
+            sb.append("Total Revenue: $").append(totalRevenue).append("\n");
             sb.append("Most Popular Drink: ").append(mostPopularDrink).append("\n");
             sb.append("Unique Drink Types Sold: ").append(uniqueDrinkTypes.size()).append("\n");
             sb.append("Unsold Drinks: ").append(unsoldDrinks.size()).append("\n");

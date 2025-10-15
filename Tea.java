@@ -6,7 +6,7 @@ public class Tea extends Drink {
 
     @Override
     public double calculatePrice() {
-        return getBasePrice(); // Tea uses base price as-is
+        return getBasePrice();
     }
 
     @Override
