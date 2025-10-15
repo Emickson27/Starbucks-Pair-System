@@ -1,12 +1,16 @@
-public class Coffee extends Drink{
+public class Coffee extends Drink {
 
-    public Coffee(String drinkname, String drinkType, String size, double price) {
-        super(drinkname, drinkType, size, price);
-    }   
-
-     @Override
-    public String toString() {
-        return drinkType + ": " + drinkName + " (" + size + ") - $" + price;
+    public Coffee(String drinkName, String drinkType, String size, double basePrice) {
+        super(drinkName, drinkType, size, basePrice);
     }
 
+    @Override
+    public double calculatePrice() {
+        return getBasePrice(); // Coffee uses base price as-is
+    }
+
+    @Override
+    public String getDisplayLabel() {
+        return getDrinkType() + ": " + getDrinkName();
+    }
 }

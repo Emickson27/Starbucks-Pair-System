@@ -1,14 +1,12 @@
 import java.util.*;
 public class Runner {
 
-    final boolean isRunning = false;
-     public static void main(String[] args) {
+    public static void main(String[] args) {
         FileLoader fileloader = new FileLoader();
         CLIMenu menu = new CLIMenu();
-        
 
         List<Drink> drinkMenu = fileloader.loadDrinksFromCSV("menu.csv");
-        menu.printMenu(drinkMenu);
+        menu.setDrinkMenu(drinkMenu);
         menu.showMainMenu();
     }
 

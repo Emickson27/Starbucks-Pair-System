@@ -1,11 +1,16 @@
-public class Tea extends Drink{
+public class Tea extends Drink {
 
-    public Tea(String drinkname, String drinkType, String size, double price) {
-        super(drinkname, drinkType, size, price);
-    }   
+    public Tea(String drinkName, String drinkType, String size, double basePrice) {
+        super(drinkName, drinkType, size, basePrice);
+    }
 
-     @Override
-    public String toString() {
-        return drinkType + ": " + drinkName + " (" + size + ") - $" + price;
+    @Override
+    public double calculatePrice() {
+        return getBasePrice(); // Tea uses base price as-is
+    }
+
+    @Override
+    public String getDisplayLabel() {
+        return getDrinkType() + ": " + getDrinkName();
     }
 }
