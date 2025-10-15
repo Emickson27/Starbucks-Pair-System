@@ -11,7 +11,7 @@ public class CLIMenu {
 
     public CLIMenu() {
         scanner = new Scanner(System.in);
-        salesTracker = new SalesTracker(new ArrayList<>()); // Will be updated with actual menu
+        salesTracker = new SalesTracker(new ArrayList<>());
         nextOrderNumber = 1;
     }
 
@@ -72,7 +72,9 @@ public class CLIMenu {
 
             }
 
-    }System.out.println("\n========================================\n");}
+    }
+        System.out.println("\n========================================\n");
+    }
 
     public void printItem(Drink drink) {
         if (drink == null) {
@@ -102,7 +104,7 @@ public class CLIMenu {
 
     private void placeOrder() {
         if (drinkMenu == null || drinkMenu.isEmpty()) {
-            System.out.println("❌ No drinks available in the menu.");
+            System.out.println("ERROR: No drinks available in the menu.");
             return;
         }
 
@@ -111,7 +113,7 @@ public class CLIMenu {
         String customerName = scanner.nextLine().trim();
 
         if (customerName.isEmpty()) {
-            System.out.println("❌ Customer name cannot be empty.");
+            System.out.println("ERROR: Customer name cannot be empty.");
             return;
         }
 
@@ -119,14 +121,14 @@ public class CLIMenu {
         String phoneNumber = scanner.nextLine().trim();
 
         if (phoneNumber.isEmpty()) {
-            System.out.println("❌ Phone number cannot be empty.");
+            System.out.println("ERROR: Phone number cannot be empty.");
             return;
         }
 
         Customer customer = new Customer(customerName, phoneNumber);
         Order order = new Order(customer, nextOrderNumber++);
 
-        System.out.println("\n📋 Adding items to order. Type 'checkout' when finished.");
+        System.out.println("\nAdding items to order. Type 'checkout' when finished.");
 
         while (true) {
             System.out.print("Enter drink name (or 'checkout'): ");
@@ -134,7 +136,7 @@ public class CLIMenu {
 
             if (drinkName.equalsIgnoreCase("checkout")) {
                 if (order.getItems().isEmpty()) {
-                    System.out.println("⚠️ Order is empty. Add some items or cancel.");
+                    System.out.println("WARNING: Order is empty. Add some items or cancel.");
                     continue;
                 }
                 break;
@@ -152,12 +154,12 @@ public class CLIMenu {
 
                 if (selectedDrink != null) {
                     order.addItem(selectedDrink, quantity);
-                    System.out.println("✅ Added " + quantity + "x " + drinkName + " (" + size + ") to order - $" + (selectedDrink.calculatePrice() * quantity));
+                    System.out.println("SUCCESS: Added " + quantity + "x " + drinkName + " (" + size + ") to order - $" + (selectedDrink.calculatePrice() * quantity));
                 } else {
-                    System.out.println("❌ Drink '" + drinkName + "' in size '" + size + "' not found in menu.");
+                    System.out.println("ERROR: Drink '" + drinkName + "' in size '" + size + "' not found in menu.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("❌ Invalid quantity. Please enter a number.");
+                System.out.println("ERROR: Invalid quantity. Please enter a number.");
             }
         }
 
@@ -166,7 +168,7 @@ public class CLIMenu {
 
         System.out.println("\n========== ORDER SUMMARY ==========");
         System.out.println(order);
-        System.out.println("✅ Order completed successfully!");
+        System.out.println("SUCCESS: Order completed successfully!");
     }
 
     private void viewSalesSummary() {
@@ -188,10 +190,10 @@ public class CLIMenu {
 
         System.out.println("\n========== HAPPY HOUR ==========");
         if (Seasonal.isHappyHour()) {
-            System.out.println("🎉 Happy Hour is now ON!");
-            System.out.println("✨ Seasonal drinks are now 20% off!");
+            System.out.println("Happy Hour is now ON!");
+            System.out.println("Seasonal drinks are now 20% off!");
         } else {
-            System.out.println("😔 Happy Hour is now OFF!");
+            System.out.println("Happy Hour is now OFF!");
             System.out.println("Seasonal drinks are back to regular price.");
         }
         System.out.println("===============================\n");

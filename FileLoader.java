@@ -37,7 +37,7 @@ public class FileLoader {
 
                 String[] values = line.split(",");
                 if (values.length < 4) {
-                    System.err.println("⚠️ Skipping line with missing fields: " + line);
+                    System.err.println("WARNING: Skipping line with missing fields: " + line);
                     continue;
                 }
 
@@ -50,7 +50,7 @@ public class FileLoader {
                     String drinkKey = (drinkName + "|" + drinkType + "|" + size).toLowerCase();
 
                     if (seenDrinks.contains(drinkKey)) {
-                        System.err.println("⚠️ Duplicate drink skipped: " + drinkName + " (" + size + ") - " + drinkType);
+                        System.err.println("WARNING: Duplicate drink skipped: " + drinkName + " (" + size + ") - " + drinkType);
                         continue;
                     }
 
@@ -61,18 +61,18 @@ public class FileLoader {
                         Drink drink = factory.createDrink(drinkName, drinkType, size, price);
                         drinks.add(drink);
                     } else {
-                        System.err.println("⚠️ Unknown drink type: " + drinkType);
+                        System.err.println("WARNING: Unknown drink type: " + drinkType);
                     }
                 } catch (NumberFormatException e) {
-                    System.err.println("⚠️ Skipping line with invalid price: " + line);
+                    System.err.println("WARNING: Skipping line with invalid price: " + line);
                 }
             }
 
         } catch (IOException e) {
-            System.err.println("❌ Error reading file: " + e.getMessage());
+            System.err.println("ERROR: Error reading file: " + e.getMessage());
         }
 
-        System.out.println("✅ Loaded " + drinks.size() + " unique drinks from menu");
+        System.out.println("SUCCESS: Loaded " + drinks.size() + " unique drinks from menu");
         return drinks;
     }
 }

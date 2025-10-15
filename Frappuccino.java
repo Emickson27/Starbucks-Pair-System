@@ -5,9 +5,10 @@ public class Frappuccino extends Drink {
     }
 
     @Override
-    public double calculatePrice() {
-        return getBasePrice() + 0.50;
-    }
+public double calculatePrice() {
+    
+    return Math.round((getBasePrice() + 0.50) * 100.0) / 100.0;
+}
 
     @Override
     public String getDisplayLabel() {

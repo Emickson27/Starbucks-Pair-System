@@ -10,13 +10,4 @@ public class Runner {
         menu.showMainMenu();
     }
 
-    public boolean turnOnSystem(boolean isRunning){
-        isRunning = true;
-        return isRunning;
-    }
-    public boolean shutdownSystem(boolean isRunning){
-        isRunning = false;
-        return isRunning;
-    }
-
 }

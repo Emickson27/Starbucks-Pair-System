@@ -10,7 +10,7 @@ public class Seasonal extends Drink {
         double price = getBasePrice();
 
         if (isHappyHour) {
-            price *= 0.8;
+            price = Math.round(price * 0.8 * 100.0) / 100.0;
         }
 
         return price;
