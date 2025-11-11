@@ -1,4 +1,3 @@
-
 public class AddOn {
 
     private String name;
@@ -9,7 +8,7 @@ public class AddOn {
             throw new IllegalArgumentException("AddOn name cannot be empty");
         }
         if (price < 0) {
-            throw new IllegalArgumentException("Addon price cannot be negative");
+            throw new IllegalArgumentException("AddOn price cannot be negative");
         }
         this.name = name.trim();
         this.price = price;

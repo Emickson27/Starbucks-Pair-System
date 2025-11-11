@@ -1,0 +1,21 @@
+=== Starbucks Customer Receipt ===
+Confirmation #: CNF-1762896423076
+Order #: 2
+Date: 2025-11-11 14:27:03
+
+Customer: Emiliano M
+Phone: 7148674738
+
+Items Ordered:
+ - 4x Tall Flat White @ $3.95 = $15.80
+    Add-ons: Extra Shot ($0.75), Soy Milk ($0.50), Almond Milk ($0.60)
+
+ - 6x Grande Caffe Americano @ $3.65 = $21.90
+    Add-ons: Extra Shot ($0.75), Soy Milk ($0.50), Almond Milk ($0.60)
+
+Subtotal: $46.20
+Tax:      $4.20
+------------------------------
+Total:    $50.40
+
+Thank you for your purchase!
