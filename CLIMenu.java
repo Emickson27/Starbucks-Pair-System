@@ -168,13 +168,30 @@ public class CLIMenu {
 
         System.out.println("\n========== ORDER SUMMARY ==========");
         System.out.println(order);
-        System.out.println("SUCCESS: Order completed successfully!");
+
+        // calculate totals for receipt
+        double total = order.calculateTotal();
+        double tax = total * 0.10;
+        List<String> addOns = new ArrayList<>(); // if you don’t track add-ons yet
+
+        UserReceipt.writeCustomerReceipt(
+            customer,
+            order.getItems().get(0).getDrink(), // or adjust if you have multiple drinks
+            addOns,
+            total,
+            tax,
+            nextOrderNumber
+);
+
+System.out.println("SUCCESS: Order completed successfully!");
     }
 
     private void viewSalesSummary() {
         System.out.println("\n========== SALES SUMMARY ==========");
         SalesTracker.SalesSummary summary = salesTracker.generateDailySummary();
         System.out.println(summary);
+
+        
     }
 
     private Drink findDrinkByNameAndSize(String name, String size) {

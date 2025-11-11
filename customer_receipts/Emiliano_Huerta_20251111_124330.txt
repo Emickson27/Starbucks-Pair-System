@@ -1,0 +1,16 @@
+=== Customer Receipt ===
+Confirmation #: CNF-1762890210408
+Order #: 2
+Date: 2025-11-11 12:43:30
+
+Customer: Emiliano Huerta
+Phone: 7148674738
+
+Item: Grande Flat White
+
+Subtotal: $8.90
+Tax:      $0.89
+-------------------------
+Total:    $9.79
+
+Thank you for your purchase!
