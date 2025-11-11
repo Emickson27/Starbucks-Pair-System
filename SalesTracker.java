@@ -1,7 +1,9 @@
+
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class SalesTracker {
+
     private final List<Order> completedOrders;
     private final List<Drink> menuItems;
 
@@ -22,11 +24,11 @@ public class SalesTracker {
 
     public SalesSummary generateDailySummary() {
         return new SalesSummary(
-            calculateTotalDrinksSold(),
-            calculateTotalRevenue(),
-            findMostPopularDrink(),
-            getUniqueDrinkTypes(),
-            findUnsoldDrinks()
+                calculateTotalDrinksSold(),
+                calculateTotalRevenue(),
+                findMostPopularDrink(),
+                getUniqueDrinkTypes(),
+                findUnsoldDrinks()
         );
     }
 
@@ -48,7 +50,7 @@ public class SalesTracker {
 
         for (Order order : completedOrders) {
             for (Order.OrderItem item : order.getItems()) {
-                String key = item.getDrink().getDrinkName() + " (" + item.getDrink().getSize() + ")";
+                String key = item.getLabel(); // includes add-ons
                 drinkCounts.merge(key, item.getQuantity(), Integer::sum);
             }
         }
@@ -83,6 +85,7 @@ public class SalesTracker {
     }
 
     public static class SalesSummary {
+
         private final int totalDrinksSold;
         private final double totalRevenue;
         private final String mostPopularDrink;
@@ -90,8 +93,8 @@ public class SalesTracker {
         private final List<String> unsoldDrinks;
 
         public SalesSummary(int totalDrinksSold, double totalRevenue,
-                          String mostPopularDrink, Set<String> uniqueDrinkTypes,
-                          List<String> unsoldDrinks) {
+                String mostPopularDrink, Set<String> uniqueDrinkTypes,
+                List<String> unsoldDrinks) {
             this.totalDrinksSold = totalDrinksSold;
             this.totalRevenue = totalRevenue;
             this.mostPopularDrink = mostPopularDrink;
@@ -100,11 +103,25 @@ public class SalesTracker {
         }
 
         // Getters
-        public int getTotalDrinksSold() { return totalDrinksSold; }
-        public double getTotalRevenue() { return totalRevenue; }
-        public String getMostPopularDrink() { return mostPopularDrink; }
-        public Set<String> getUniqueDrinkTypes() { return uniqueDrinkTypes; }
-        public List<String> getUnsoldDrinks() { return unsoldDrinks; }
+        public int getTotalDrinksSold() {
+            return totalDrinksSold;
+        }
+
+        public double getTotalRevenue() {
+            return totalRevenue;
+        }
+
+        public String getMostPopularDrink() {
+            return mostPopularDrink;
+        }
+
+        public Set<String> getUniqueDrinkTypes() {
+            return uniqueDrinkTypes;
+        }
+
+        public List<String> getUnsoldDrinks() {
+            return unsoldDrinks;
+        }
 
         @Override
         public String toString() {
