@@ -1,4 +1,6 @@
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -8,6 +10,15 @@ public class CLIMenu {
     private List<Drink> drinkMenu;
     private SalesTracker salesTracker;
     private int nextOrderNumber;
+
+    // Available add-ons (make up prices)
+    private static final List<AddOn> AVAILABLE_ADDONS = Arrays.asList(
+            new AddOn("extra shot", 0.75),
+            new AddOn("vanilla syrup", 0.50),
+            new AddOn("almond milk", 0.60),
+            new AddOn("soy milk", 0.50),
+            new AddOn("caramel drizzle", 0.40)
+    );
 
     public CLIMenu() {
         scanner = new Scanner(System.in);
@@ -19,11 +30,10 @@ public class CLIMenu {
         this.drinkMenu = drinkMenu;
         this.salesTracker = new SalesTracker(drinkMenu);
     }
-    
 
-    public void showMainMenu(){
+    public void showMainMenu() {
         String choice;
-        do{
+        do {
             System.out.println("=== Starbucks Menu ===");
             System.out.println("1. View Full Menu");
             System.out.println("2. View Menu by Type");
@@ -33,8 +43,8 @@ public class CLIMenu {
             System.out.println("6. Exit");
             System.out.print("Enter your choice: ");
             choice = scanner.nextLine();
-            
-            switch(choice){
+
+            switch (choice) {
                 case "1":
                     printMenu(drinkMenu);
                     break;
@@ -56,23 +66,22 @@ public class CLIMenu {
                     System.out.println("Exiting... Thank you!");
                     break;
             }
-        }while(!choice.equals("6"));
+        } while (!choice.equals("6"));
     }
 
-
-    public void printMenuByType(List<Drink> drinks, String type){
-        if (drinks == null || drinks.isEmpty()){
+    public void printMenuByType(List<Drink> drinks, String type) {
+        if (drinks == null || drinks.isEmpty()) {
             System.out.println("No drinks found in the menu.");
             return;
         }
         System.out.println("\n==========  STARBUCKS MENU  ==========\n");
         for (Drink d : drinks) {
-            if (d.getDrinkType().equals(type.toLowerCase())){
+            if (d.getDrinkType().equalsIgnoreCase(type)) {
                 System.out.println(d);
 
             }
 
-    }
+        }
         System.out.println("\n========================================\n");
     }
 
@@ -121,7 +130,7 @@ public class CLIMenu {
         String phoneNumber = scanner.nextLine().trim();
 
         if (phoneNumber.isEmpty()) {
-            System.out.println("ERROR: Phone number cannot be empty.");
+            System.out.println("ERROR: Phone number cannot be empty");
             return;
         }
 
@@ -153,8 +162,37 @@ public class CLIMenu {
                 Drink selectedDrink = findDrinkByNameAndSize(drinkName, size);
 
                 if (selectedDrink != null) {
-                    order.addItem(selectedDrink, quantity);
-                    System.out.println("SUCCESS: Added " + quantity + "x " + drinkName + " (" + size + ") to order - $" + (selectedDrink.calculatePrice() * quantity));
+                    // Ask for add-ons (strongly typed)
+                    List<AddOn> selectedAddOns = new ArrayList<>();
+                    System.out.print("Would you like add-ons? (y/n): ");
+                    String wantAddons = scanner.nextLine().trim();
+                    if (wantAddons.equalsIgnoreCase("y")) {
+                        System.out.println("Available add-ons:");
+                        for (int i = 0; i < AVAILABLE_ADDONS.size(); i++) {
+                            AddOn a = AVAILABLE_ADDONS.get(i);
+                            System.out.println((i + 1) + ". " + a.getName() + " ($" + a.getPrice() + ")");
+                        }
+                        System.out.print("Enter add-on numbers separated by commas (or leave empty): ");
+                        String addonInput = scanner.nextLine().trim();
+                        if (!addonInput.isEmpty()) {
+                            String[] tokens = addonInput.split(",");
+                            for (String t : tokens) {
+                                try {
+                                    int idx = Integer.parseInt(t.trim()) - 1;
+                                    if (idx >= 0 && idx < AVAILABLE_ADDONS.size()) {
+                                        selectedAddOns.add(AVAILABLE_ADDONS.get(idx));
+                                    }
+                                } catch (NumberFormatException ignored) {
+                                }
+                            }
+                        }
+                    }
+
+                    order.addItem(selectedDrink, quantity, selectedAddOns);
+                    double addonsTotal = selectedAddOns.stream().mapToDouble(AddOn::getPrice).sum() * quantity;
+                    System.out.println("SUCCESS: Added " + quantity + "x " + selectedDrink.getDrinkName() + " (" + size + ")"
+                            + (selectedAddOns.isEmpty() ? "" : " + " + selectedAddOns)
+                            + " to order - $" + String.format("%.2f", selectedDrink.calculatePrice() * quantity + addonsTotal));
                 } else {
                     System.out.println("ERROR: Drink '" + drinkName + "' in size '" + size + "' not found in menu.");
                 }

@@ -1,4 +1,4 @@
-# Starbucks Ordering System
+# Starbucks Ordering System DAY1
 
 A command-line interface (CLI) application that simulates a Starbucks ordering system. This Java-based application allows users to browse a menu, place orders, track sales, and manage special promotions like Happy Hour.
 
