@@ -1,22 +1,30 @@
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Order {
+
     public static class OrderItem {
+
         private final Drink drink;
         private final int quantity;
+        private final List<AddOn> addOns;
 
         public OrderItem(Drink drink, int quantity) {
+            this(drink, quantity, new ArrayList<>());
+        }
+
+        public OrderItem(Drink drink, int quantity, List<AddOn> addOns) {
             if (drink == null) {
                 throw new IllegalArgumentException("Drink cannot be null");
             }
             if (quantity <= 0) {
                 throw new IllegalArgumentException("Quantity must be positive");
             }
-
             this.drink = drink;
             this.quantity = quantity;
+            this.addOns = addOns == null ? new ArrayList<>() : new ArrayList<>(addOns);
         }
 
         public Drink getDrink() {
@@ -27,13 +35,35 @@ public class Order {
             return quantity;
         }
 
+        public List<AddOn> getAddOns() {
+            return new ArrayList<>(addOns);
+        }
+
+        // Unit price including add-ons (for a single unit)
+        public double getUnitPrice() {
+            double unit = drink.calculatePrice();
+            for (AddOn a : addOns) {
+                unit += a.getPrice();
+            }
+            return Math.round(unit * 100.0) / 100.0;
+        }
+
         public double getTotalPrice() {
-            return drink.calculatePrice() * quantity;
+            return Math.round(getUnitPrice() * quantity * 100.0) / 100.0;
+        }
+
+        public String getLabel() {
+            StringBuilder sb = new StringBuilder();
+            sb.append(drink.getDrinkName()).append(" (").append(drink.getSize()).append(")");
+            for (AddOn a : addOns) {
+                sb.append(" + ").append(a.getName());
+            }
+            return sb.toString();
         }
 
         @Override
         public String toString() {
-            return drink.getDrinkName() + " x" + quantity + " - $" + getTotalPrice();
+            return String.format("%s x%d - $%.2f", getLabel(), quantity, getTotalPrice());
         }
     }
     private final List<Order.OrderItem> items;
@@ -48,14 +78,19 @@ public class Order {
         this.isCompleted = false;
     }
 
+    // Overload: add without add-ons
     public void addItem(Drink drink, int quantity) {
+        addItem(drink, quantity, new ArrayList<>());
+    }
+
+    public void addItem(Drink drink, int quantity, List<AddOn> addOns) {
         if (drink == null) {
             throw new IllegalArgumentException("Drink cannot be null");
         }
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be positive");
         }
-        items.add(new Order.OrderItem(drink, quantity));
+        items.add(new Order.OrderItem(drink, quantity, addOns));
     }
 
     public void removeItem(Drink drink, int quantity) {
@@ -63,29 +98,32 @@ public class Order {
             return;
         }
 
-        items.removeIf(item ->
-            item.getDrink().getDrinkName().equals(drink.getDrinkName()) &&
-            item.getDrink().getSize().equals(drink.getSize()) &&
-            item.getQuantity() <= quantity
+        items.removeIf(item
+                -> item.getDrink().getDrinkName().equals(drink.getDrinkName())
+                && item.getDrink().getSize().equals(drink.getSize())
+                && item.getQuantity() <= quantity
         );
     }
 
+    // Subtotal includes add-ons
     public double calculateSubtotal() {
-        return items.stream()
-                .mapToDouble(item -> item.getDrink().calculatePrice() * item.getQuantity())
+        double sum = items.stream()
+                .mapToDouble(Order.OrderItem::getTotalPrice)
                 .sum();
+        return Math.round(sum * 100.0) / 100.0;
     }
 
     public double calculateTotal() {
         double subtotal = calculateSubtotal();
 
-        // Apply bulk discount if more than 3 total drinks
-        int totalDrinks = items.stream().mapToInt(item -> item.getQuantity()).sum();
-        if (totalDrinks > 3) {
-            subtotal *= 0.9; // 10% discount
-        }
+        // Let PromotionEngine choose the best single promotion
+        double discount = PromotionEngine.calculateBestDiscount(this);
 
-        return subtotal;
+        double total = subtotal - discount;
+        if (total < 0) {
+            total = 0;
+        }
+        return Math.round(total * 100.0) / 100.0;
     }
 
     public void completeOrder() {
@@ -119,8 +157,8 @@ public class Order {
             sb.append("  ").append(item).append("\n");
         }
 
-        sb.append("Subtotal: $" + calculateSubtotal() + "\n");
-        sb.append("Total: $" + calculateTotal() + "\n");
+        sb.append(String.format("Subtotal: $%.2f\n", calculateSubtotal()));
+        sb.append(String.format("Total: $%.2f\n", calculateTotal()));
 
         return sb.toString();
     }
